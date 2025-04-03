@@ -4,21 +4,24 @@ from flask import Flask
 app = Flask(__name__)
 app.route("/")
 
+def home():
+    return render_template("home.html")
+
 
 def create_stock():
-    pass
+    return render_template("create.html")
 
 def delete_stock():
-    pass
+    return render_template("delete.html")
 
 def edit_stock():
-    pass
+    return render_template("edit.html")
 
 def login():
-    pass
+    return render_template("login.html")
 
 def logout():
-    pass
+    return render_template("logout.html")
 
 def register():
-    pass
+    return render_template("register.html")

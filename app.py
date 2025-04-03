@@ -13,5 +13,5 @@ def login():
 def logout():
     pass
 
-def logotu():
+def register():
     pass

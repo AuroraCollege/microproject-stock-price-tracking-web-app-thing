@@ -1,8 +1,19 @@
 #create basic app
-from flask import Flask
+from flask import Flask, request, redirect, url_for, render_template, session, flash
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, Length
+from flask_wtf.csrf import CSRFProtect, CSRFError
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
+
+class RegisterForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Register')
 
 @app.route("/layout", methods=['GET'])
 def home():
@@ -31,7 +42,25 @@ def logout():
 #app will open on register page
 @app.route("/")
 def register():
-    return render_template("register.html")
+    form = RegisterForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        hashed_password = generate_password_hash(password) #turns password into hashed password
+
+        try:
+            conn = sqlite3.connect('users.db')
+            c = conn.cursor()
+            c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed_password))
+            conn.commit()
+        except sqlite3.Error as e:
+            return "An error occurred while accessing the database.", 500
+        finally:
+            conn.close()
+
+        flash('Account created successfully! Please log in.', 'success')  # Success message
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
 
 if __name__ == '__main__':
     app.run(debug=True)

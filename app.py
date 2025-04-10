@@ -5,6 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length
 from flask_wtf.csrf import CSRFProtect, CSRFError
+import sqlite3
 
 
 app = Flask(__name__)

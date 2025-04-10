@@ -1,4 +1,5 @@
 #create basic app
+<<<<<<< Updated upstream
 from flask import Flask, request, redirect, url_for, render_template, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf import FlaskForm
@@ -11,10 +12,19 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
+<<<<<<< Updated upstream
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Register')
+=======
+def init_db():
+    conn = sqlite3.connect('stocks.db')
+    c = conn.cursor()
+    c.execute('CREATE TABLE IF NOT EXISTS stocks ( StockId INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, ticker TEXT NOT NULL, price TEXT NOT NULL)')
+    conn.commit()
+    conn.close()
+>>>>>>> Stashed changes
 
 @app.route("/layout", methods=['GET'])
 def home():
@@ -22,6 +32,12 @@ def home():
 
 @app.route("/create", methods=['GET', 'POST'])
 def create_stock():
+
+    conn = sqlite3.connect('stocks.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO stocks (name, ticker, price) VALUES (?,?,?)", (request.form.get('name')), (request.form.get('ticker')), (request.form.get('price')))
+    conn.commit()
+    conn.close()
     return render_template("create.html")
 
 @app.route("/delete", methods=['GET', 'POST'])

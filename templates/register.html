@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <script>
+      function validateForm(event) {
+        const passwordField = document.getElementById("password");
+        const password = passwordField.value;
+        const message = document.getElementById("error-message");
+
+        if (password.length < 8) {
+          message.textContent = "Password too short";
+          message.style.color = "red";
+          event.preventDefault(); // Prevent form submission
+        } else {
+          message.textContent = ""; // Clear the error message
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Register</h1>
+    <form method="post" onsubmit="validateForm(event)">
+      {{ form.hidden_tag() }}
+      <label for="username">Username:</label>
+      {{ form.username(size=20) }}<br />
+      <label for="password">Password:</label>
+      {{ form.password(id='password', size=20) }}<br />
+      <span id="error-message"></span><br />
+      {{ form.submit() }}
+    </form>
+  </body>
+</html>

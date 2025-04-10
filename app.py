@@ -59,8 +59,8 @@ def register():
         finally:
             conn.close()
 
-        flash('Account created successfully! Please log in.', 'success')  # Success message
-        return redirect(url_for('login'))
+        
+        return redirect(url_for('layout'))
     return render_template('register.html', form=form)
 
 if __name__ == '__main__':
